@@ -1,14 +1,86 @@
 <h2>Add Customer</h2>
-<form action="/submit-customer" method="post">
+<!--<button (click)="defaultValue()">Default Value</button>-->
+<form [formGroup]="addCustomerForm" (ngSubmit)="submitForm()" method="post">
+
   <label for="name">Name:</label><br>
-  <input type="text" id="name" name="name" required><br><br>
+  <input type="text" id="name" name="name" formControlName="name">
+  <div *ngIf="addCustomerForm.get('name')?.invalid && addCustomerForm.get('name')?.touched">
+    <span style="color: red" *ngIf="addCustomerForm.get('name')?.errors?.['required']"> Please Enter Your Name </span>
+    <span style="color: red" *ngIf="addCustomerForm.get('name')?.errors?.['minlength']"> Minimum Length is 4 </span>
+  </div>
+  <br><br>
+
+  <label for="mobile">Phone:</label><br>
+  <input type="tel" id="mobile" name="mobile" formControlName="mobile">
+  <div *ngIf="addCustomerForm.get('mobile')?.invalid && addCustomerForm.get('mobile')?.touched">
+    <span style="color: red"
+          *ngIf="addCustomerForm.get('mobile')?.errors?.['required']"> Please Enter Your Mobile Number </span>
+    <span style="color: red" *ngIf="addCustomerForm.get('mobile')?.errors?.['minlength']"> Invalid Number </span>
+    <span style="color: red" *ngIf="addCustomerForm.get('mobile')?.errors?.['maxlength']"> Maximum Length is 11 </span>
+  </div>
+  <br><br>
 
   <label for="email">Email:</label><br>
-  <input type="email" id="email" name="email" required><br><br>
+  <input type="email" id="email" name="email" formControlName="email">
+  <div *ngIf="addCustomerForm.get('email')?.invalid && addCustomerForm.get('email')?.touched">
+    <span style="color: red" *ngIf="addCustomerForm.get('email')?.errors?.['required']"> Please Enter Your Email </span>
+    <span style="color: red"
+          *ngIf="addCustomerForm.get('email')?.errors?.['email']"> Please Do Proper @example.com </span>
+  </div>
+  <br><br>
 
-  <label for="phone">Phone:</label><br>
-  <input type="tel" id="phone" name="phone" required><br><br>
+  <label for="dob">Date of Birth:</label><br>
+  <input type="date" id="dob" name="dob" formControlName="dob">
+  <div *ngIf="addCustomerForm.get('dob')?.invalid && addCustomerForm.get('dob')?.touched">
+    <span style="color: red" *ngIf="addCustomerForm.get('dob')?.errors?.['required']"> Please Enter Birth Date </span>
+  </div>
+  <br><br>
 
-  <input type="submit" value="Add Customer">
+  <div formGroupName="price">
+    <label for="currency">Currency:</label><br>
+    <input type="text" id="currency" name="currency" formControlName="currency">
+    <div
+      *ngIf="addCustomerForm.get('price')?.get('currency')?.invalid
+      && addCustomerForm.get('price')?.get('currency')?.touched">
+      <span style="color: red"
+            *ngIf="addCustomerForm.get('price')?.get('currency')?.errors?.['required']"> Please Enter Currency </span>
+    </div>
+    <br><br>
+    <label for="value">Price:</label><br>
+    <input type="number" id="value" name="value" formControlName="value">
+    <div *ngIf="addCustomerForm.get('price')?.get('value')?.invalid
+    && addCustomerForm.get('price')?.get('value')?.touched">
+      <span style="color: red"
+            *ngIf="addCustomerForm.get('price')?.get('value')?.errors?.['required']"> Please Enter Price </span>
+    </div>
+    <br><br>
+  </div>
+
+  <input type="submit" [disabled]="addCustomerForm.invalid" value="Add Customer">
   <input type="button" value="Customer List" routerLink="">
 </form>
+<br>
+
+<h2>Customer List</h2>
+<table border="1" style="width:100%; border-collapse: collapse; text-align: center">
+  <thead>
+  <tr>
+    <th>Customer Name</th>
+    <th>Mobile</th>
+    <th>Email</th>
+    <th>Date of Birth</th>
+    <th>Currency</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let customer of customerList">
+    <td>{{ customer.name }}</td>
+    <td>{{ customer.mobile }}</td>
+    <td>{{ customer.email }}</td>
+    <td>{{ customer.dob }}</td>
+    <td>{{ customer.price.currency }}</td>
+    <td>{{ customer.price.value }}</td>
+  </tr>
+  </tbody>
+</table>

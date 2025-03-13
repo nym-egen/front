@@ -8,6 +8,8 @@ import { CustomerListComponent } from './customer/customer-list/customer-list.co
 import { RouterModule } from '@angular/router';
 import { ItemAddComponent } from './item/item-add/item-add.component';
 import { ItemListComponent } from './item/item-list/item-list.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {CustomerService} from "./service/customer.service";
 
 @NgModule({
   declarations: [
@@ -20,9 +22,10 @@ import { ItemListComponent } from './item/item-list/item-list.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [CustomerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
