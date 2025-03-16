@@ -9,35 +9,33 @@ import {CustomerService} from "../../service/customer.service";
 })
 export class CustomerAddComponent implements OnInit {
 
+  constructor(private customerService: CustomerService) {
+  }
+
+  customerSearchPageList: any[] = [];
+
   addCustomerForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     mobile: new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    dob: new FormControl('', [Validators.required]),
-    price: new FormGroup({
-      currency: new FormControl('', [Validators.required]),
-      value: new FormControl('', [Validators.required]),
-    })
+    dob: new FormControl('', [Validators.required])
   });
 
-  customerList: any[] = [];
-
-  constructor(private customerService: CustomerService) {
-
-  }
-
   ngOnInit(): void {
+    this.searchPageList()
   }
 
   submitForm(): void {
-    console.log(this.addCustomerForm);
-
-    this.customerService.addCustomer(this.addCustomerForm.value);
-    this.updateCustomerList();
+    this.customerService.addCustomer(this.addCustomerForm.value).subscribe(value => {
+      console.log(value)
+      this.searchPageList();
+    });
   }
 
-  public updateCustomerList(): void {
-    this.customerList = this.customerService.getList();
+  public searchPageList(): void {
+    this.customerService.searchPageList(1, 1).subscribe(data => {
+      this.customerSearchPageList = data.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
+    });
   }
 
 }

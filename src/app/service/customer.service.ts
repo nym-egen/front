@@ -1,19 +1,21 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class CustomerService {
 
-  private customerList: any[] = [];
+  private url: string = "http://localhost:8080/api/v1/customers";
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
-  public addCustomer(customer: any): void {
-    this.customerList.push(customer);
+  public addCustomer(customer: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/create`, customer, {responseType: 'text' as 'json'})
   }
 
-  public getList(): Array<any> {
-    return this.customerList;
+  public searchPageList(page: number, size: number): Observable<any> {
+    return this.http.post<any>(`${this.url}/search-list`, {page, size});
   }
 
 }
