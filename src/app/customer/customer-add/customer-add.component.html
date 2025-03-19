@@ -1,5 +1,4 @@
 <h2>Add Customer</h2>
-<!--<button (click)="defaultValue()">Default Value</button>-->
 <form [formGroup]="addCustomerForm" (ngSubmit)="submitForm()" method="post">
 
   <label for="name">Name:</label><br>
@@ -24,7 +23,8 @@
   <input type="email" id="email" name="email" formControlName="email">
   <div *ngIf="addCustomerForm.get('email')?.invalid && addCustomerForm.get('email')?.touched">
     <span style="color: red" *ngIf="addCustomerForm.get('email')?.errors?.['required']"> Please Enter Your Email </span>
-    <span style="color: red" *ngIf="addCustomerForm.get('email')?.errors?.['email']"> Please Do Proper @example.com </span>
+    <span style="color: red"
+          *ngIf="addCustomerForm.get('email')?.errors?.['email']"> Please Do Proper @example.com </span>
   </div>
   <br><br>
 
@@ -49,6 +49,7 @@
     <th>Email</th>
     <th>Date of Birth</th>
     <th>Due Amount</th>
+    <th>Action</th>
   </tr>
   </thead>
   <tbody>
@@ -59,6 +60,9 @@
     <td>{{ customer.email }}</td>
     <td>{{ customer.dob }}</td>
     <td>{{ customer.dueAmount }}</td>
+    <td>
+      <button (click)="deleteCustomer(customer.id)">Delete</button>
+    </td>
   </tr>
   </tbody>
 </table>

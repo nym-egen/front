@@ -32,6 +32,13 @@ export class CustomerAddComponent implements OnInit {
     });
   }
 
+  deleteCustomer(id: number): void {
+    this.customerService.deleteCustomer(id).subscribe(value => {
+      console.log(value)
+      this.searchPageList();
+    });
+  }
+
   public searchPageList(): void {
     this.customerService.searchPageList(1, 1).subscribe(data => {
       this.customerSearchPageList = data.sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
